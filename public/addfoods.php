@@ -2,17 +2,11 @@
 
 if(isset($_POST['foodtext'])){
   try{
-    $pdo = new PDO('mysql:host=localhost;dbname=board;charset=utf8','php-or','php-or');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    include __DIR__ . '/../includes/DatabaseConnection.php';
+    include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-    $sql = 'INSERT INTO `food` SET
-            `foodtext` = :foodtext,
-            `fooddate` = CURDATE(),
-            `authorid` = 2';
+    insertFood($pdo, $_POST['foodtext'], 1);
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':foodtext', $_POST['foodtext']);
-    $stmt->execute();
 
     header('location: foods.php');
 

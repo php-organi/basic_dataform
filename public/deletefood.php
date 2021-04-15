@@ -1,14 +1,10 @@
 <?php
 
 try{
-  $pdo = new PDO('mysql:host=localhost;dbname=board;charset=utf8','php-or','php-or');
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  include __DIR__ . '/../includes/DatabaseConnection.php';
+  include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-  $sql = 'DELETE FROM `food` WHERE `id` = :id';
-
-  $stmt = $pdo->prepare($sql);
-  $stmt->bindValue(':id', $_POST['id']);
-  $stmt->execute();
+  deleteFood($pdo, $_POST['id']);
 
   header('location: foods.php');
 }
