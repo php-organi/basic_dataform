@@ -4,18 +4,9 @@ try{
   include __DIR__ . '/../includes/DatabaseConnection.php';
   include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-  $foods = allFood($pdo);
+  deleteFood($pdo, $_POST['id']);
 
-  $title = 'food 목록';
-
-  $totalFood = totalFood($pdo);
-
-  ob_start();
-
-  include __DIR__ . '/../templates/foods.html.php';
-
-  $output = ob_get_clean();
-
+  header('location: foods.php');
 }
 catch(PDOException $e){
   $title = '오류 발생';
