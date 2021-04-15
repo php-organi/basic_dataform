@@ -4,15 +4,17 @@ try{
   $pdo = new PDO('mysql:host=localhost;dbname=board;charset=utf8','php-or','php-or');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $sql = 'SELECT `foodtext` FROM `food`';
+  $sql = 'SELECT `food`.`id`,`foodtext`,`name`,`email`  FROM `food` INNER JOIN `author` ON `authorid` = `author`.`id`';
 
-  $result = $pdo->query($sql);
+  // $result = $pdo->query($sql);
 
-  while($row = $result->fetch()){
-     $foods[] = $row['foodtext'];
-  }
+  // while($row = $result->fetch()){
+  //    $foods[] = $row['foodtext'];
+  // }
 
-  // $foods = $pdo->query($sql);
+  $foods = $pdo->query($sql);
+
+  //var_dump($foods);
 
   $title = 'food 목록';
 
