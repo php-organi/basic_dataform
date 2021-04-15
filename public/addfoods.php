@@ -7,7 +7,8 @@ if(isset($_POST['foodtext'])){
 
     $sql = 'INSERT INTO `food` SET
             `foodtext` = :foodtext,
-            `fooddate` = CURDATE()';
+            `fooddate` = CURDATE(),
+            `authorid` = 2';
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':foodtext', $_POST['foodtext']);
