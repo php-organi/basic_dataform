@@ -4,7 +4,8 @@ try{
   include __DIR__ . '/../includes/DatabaseConnection.php';
   include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-  deleteFood($pdo, $_POST['id']);
+  // deleteFood($pdo, $_POST['id']);
+  delete($pdo, 'food', 'id', $_POST['id']);
 
   header('location: foods.php');
 }

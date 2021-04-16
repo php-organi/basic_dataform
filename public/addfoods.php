@@ -5,8 +5,10 @@ if(isset($_POST['foodtext'])){
     include __DIR__ . '/../includes/DatabaseConnection.php';
     include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-    insertFood($pdo, $_POST['foodtext'], 1);
+    // insertFood($pdo, ['authorid'=>2,
+    //  'foodtext'=>$_POST['foodtext'], 'fooddate'=>new DateTime()]);
 
+    insert($pdo, 'food', ['authorid'=>1, 'foodtext'=>$_POST['foodtext'], 'fooddate'=>new DateTime()]);
 
     header('location: foods.php');
 

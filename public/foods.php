@@ -4,11 +4,24 @@ try{
   include __DIR__ . '/../includes/DatabaseConnection.php';
   include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-  $foods = allFood($pdo);
+  $result = findAll($pdo, 'food');
+  // var_dump($result);
+  $foods = [];
+  foreach($result as $food){
+    $author = findById($pdo, 'author', 'id', $food['authorid']);
+
+    $foods[] = [
+      'id'=>$food['id'],
+      'foodtext'=>$food['foodtext'],
+      'fooddate'=>$food['fooddate'],
+      'name'=>$author['name'],
+      'email'=>$author['email'],
+    ];
+  }
 
   $title = 'food 목록';
 
-  $totalFood = totalFood($pdo);
+  $totalFood = total($pdo, 'food');
 
   ob_start();
 

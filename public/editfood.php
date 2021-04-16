@@ -4,12 +4,27 @@ include __DIR__ . '/../includes/DatabaseConnection.php';
 include __DIR__ . '/../includes/DatabaseFunctions.php';
 
 try{
-  if(isset($_POST['foodtext'])){
-    updateFood($pdo, $_POST['foodid'], $_POST['foodtext'], 1);
+  if(isset($_POST['food'])){
+    // updateFood($pdo, $_POST['foodid'], $_POST['foodtext'], 1);
+    // updateFood($pdo, ['id'=>$_POST['foodid'],
+    // 'foodtext'=>$_POST['foodtext'],'authorid'=>2]);
+
+    // update($pdo, 'food', 'id', ['id'=>$_POST['foodid'], 'foodtext'=>$_POST['foodtext'], 'authorid'=>2]);
+
+    // save($pdo, 'food','id', ['id'=> $_POST['foodid'], 'foodtext'=>$_POST['foodtext'], 'fooddate'=>new DateTime(), 'authorid'=>2]);
+    $food = $_POST['food'];
+    $food['fooddate'] = new DateTime();
+    $food['authorid'] = 1;
+
+    save($pdo,'food', 'id', $food);
 
     header('location: foods.php');
   }else{
-    $food = getFood($pdo, $_GET['id']);
+    if(isset($_GET['id'])){
+      $food = findById($pdo, 'food', 'id', $_GET['id']);
+
+    }
+    // $food = getFood($pdo, $_GET['id']);
     $title = 'food 글 수정';
 
     ob_start();
