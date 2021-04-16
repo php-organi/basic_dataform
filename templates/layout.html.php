@@ -13,7 +13,7 @@
       <ul>
         <li><a href="index.php">Home</a></li>
         <li><a href="foods.php">목록</a></li>
-        <li><a href="addfoods.php">등록</a></li>
+        <li><a href="editfood.php">등록</a></li>
       </ul>
     </header>
   </nav>

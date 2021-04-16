@@ -1,20 +1,27 @@
 <?php
 
 try{
-  $pdo = new PDO('mysql:host=localhost;dbname=board;charset=utf8','php-or','php-or');
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  include __DIR__ . '/../includes/DatabaseConnection.php';
+  include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-  $sql = 'SELECT `foodtext` FROM `food`';
+  $result = findAll($pdo, 'food');
+  // var_dump($result);
+  $foods = [];
+  foreach($result as $food){
+    $author = findById($pdo, 'author', 'id', $food['authorid']);
 
-  $result = $pdo->query($sql);
-
-  while($row = $result->fetch()){
-     $foods[] = $row['foodtext'];
+    $foods[] = [
+      'id'=>$food['id'],
+      'foodtext'=>$food['foodtext'],
+      'fooddate'=>$food['fooddate'],
+      'name'=>$author['name'],
+      'email'=>$author['email'],
+    ];
   }
 
-  // $foods = $pdo->query($sql);
-
   $title = 'food 목록';
+
+  $totalFood = total($pdo, 'food');
 
   ob_start();
 
