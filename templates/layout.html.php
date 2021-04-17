@@ -12,8 +12,8 @@
       <h1>food 게시판</h1>
       <ul>
         <li><a href="index.php">Home</a></li>
-        <li><a href="foods.php">목록</a></li>
-        <li><a href="editfood.php">등록</a></li>
+        <li><a href="index.php?action=list">목록</a></li>
+        <li><a href="index.php?action=edit">등록</a></li>
       </ul>
     </header>
   </nav>

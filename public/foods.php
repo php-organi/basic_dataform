@@ -2,13 +2,16 @@
 
 try{
   include __DIR__ . '/../includes/DatabaseConnection.php';
-  include __DIR__ . '/../includes/DatabaseFunctions.php';
+  include __DIR__ . '/../classes/DatabaseTable.php';
 
-  $result = findAll($pdo, 'food');
-  // var_dump($result);
+  $foodstable = new DatabaseTable($pdo, 'food', 'id');
+  $authorstable = new DatabaseTable($pdo, 'author', 'id');
+
+  $result = $foodstable->findAll();
   $foods = [];
   foreach($result as $food){
-    $author = findById($pdo, 'author', 'id', $food['authorid']);
+    // $author = findById($pdo, 'author', 'id', $food['authorid']);
+    $author = $authorstable->findById($food['authorid']);
 
     $foods[] = [
       'id'=>$food['id'],
@@ -21,7 +24,7 @@ try{
 
   $title = 'food 목록';
 
-  $totalFood = total($pdo, 'food');
+  $totalFood = $foodstable->total();
 
   ob_start();
 

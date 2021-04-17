@@ -1,18 +1,5 @@
 <?php
 
-// function totalFood($pdo){
-//   $query = $pdo->prepare('SELECT COUNT(*) FROM `food`');
-//   $query->execute();
-//   $row = $query->fetch();
-//   return $row[0];
-// }
-// function getfood($pdo, $id){
-//   $query = $pdo->prepare('SELECT * FROM `food` where `id` = :id');
-//   $query->bindValue(':id', $id);
-//   $query->execute();
-//   return $query->fetch();
-// }
-
 function query($pdo, $sql, $parameters = []){
   $query = $pdo->prepare($sql);
   foreach($parameters as $name => $value){
@@ -23,84 +10,6 @@ function query($pdo, $sql, $parameters = []){
   return $query;
 }
 
-// function totalFood($pdo){
-//   $query = query($pdo, 'SELECT COUNT(*) FROM `food`');
-//   $row = $query->fetch();
-//   return $row[0];
-// }
-
-// function getFood($pdo, $id ){
-//   $parameter = [':id' => $id];
-
-//   $query = query($pdo, 'SELECT * FROM `food` WHERE `id` = :id', $parameter);
-//   return $query->fetch();
-// }
-
-// function insertFood($pdo, $foodtext, $authorid){
-//   $query = 'INSERT INTO `food`(`foodtext`, `fooddate`, `authorid`)
-//             VALUES(:foodtext, CURDATE(), :authorid)';
-//   $parameters = [':foodtext' => $foodtext, ':authorid' => $authorid];
-//   query($pdo, $query, $parameters);
-// }
-// function insertFood($pdo, $fields){
-//   $query = 'INSERT INTO `food` (';
-//   foreach($fields as $key=>$vaule){
-//     $query .= '`'.$key.'`,';
-//   }
-//   $query = rtrim($query, ',');
-//   $query .= ') VALUES (';
-
-//   foreach($fields as $key=>$value){
-//     $query .= ':'.$key.',';
-//   }
-//   $query = rtrim($query, ',');
-
-//   $query .= ')';
-
-//   $fields = processDates($fields);
-
-//   // echo var_dump($fields);
-//   query($pdo, $query, $fields);
-// }
-
-
-// function updateFood($pdo, $foodid, $foodtext, $authorid){
-//   $query = 'UPDATE `food` SET `authorid` = :authorid, `foodtext` = :foodtext WHERE `id` = :id';
-//   $parameters = [':foodtext' => $foodtext, 'authorid'=>$authorid, ':id'=>$foodid];
-//   query($pdo, $query, $parameters);
-// }
-
-// function updateFood($pdo, $fields){
-//    $query = 'UPDATE `food` SET ';
-//    // foreach($fields as $key=>$vaule){
-//    //   $query .= '`'.$key.'` = :'.$key.',';
-//    // }
-
-//    foreach ($fields as $key => $value) {
-//  		$query .= '`' . $key . '` = :' . $key . ',';
-//  	}
-
-//    $query = rtrim($query, ',');
-//    $query .= ' WHERE `id` = :primarykey';
-//    $fields['primarykey'] = $fields['id'];
-
-//    $fields = processDates($fields);
-//   echo var_dump($fields);
-//    query($pdo, $query, $fields);
-//  }
-
-// function deleteFood($pdo, $id){
-//   $query = 'DELETE FROM `food` WHERE `id` = :id';
-//   $parameters = [':id'=> $id];
-
-//   query($pdo, $query, $parameters);
-// }
-
-// function allFood($pdo){
-//   $foods = query($pdo, 'SELECT `food`.`id`,`foodtext`,`fooddate`,`name`,`email`  FROM `food` INNER JOIN `author` ON `authorid` = `author`.`id`');
-//   return $foods->fetchAll();
-// }
-
 function processDates($fields){
   foreach($fields as $key=>$value){
     if($value instanceof DateTime){
@@ -109,9 +18,6 @@ function processDates($fields){
   }
   return $fields;
 }
-
-
-
 
 function findAll($pdo, $table){
   $result = query($pdo, 'SELECT * FROM `' . $table . '`');

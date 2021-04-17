@@ -2,10 +2,11 @@
 
 try{
   include __DIR__ . '/../includes/DatabaseConnection.php';
-  include __DIR__ . '/../includes/DatabaseFunctions.php';
+  include __DIR__ . '/../classes/DatabaseTable.php';
 
-  // deleteFood($pdo, $_POST['id']);
-  delete($pdo, 'food', 'id', $_POST['id']);
+  //delete($pdo, 'food', 'id', $_POST['id']);
+  $foodstable = new DatabaseTable($pdo, 'food', 'id');
+  $foodstable->delete($_POST['id']);
 
   header('location: foods.php');
 }

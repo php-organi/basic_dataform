@@ -11,9 +11,9 @@
     작성일: <?php $date = new DateTime($food['fooddate']);
             echo $date->format('jS F Y')?>)
 
-    <a href="editfood.php?id=<?= $food['id']?>">수정</a>
+    <a href="index.php?action=edit&id=<?= $food['id']?>">수정</a>
 
-    <form action="deletefood.php" method="post">
+    <form action="index.php?action=delete" method="post">
       <input type="hidden" name="id" value="<?=$food['id']?>">
       <input type="submit" value="삭제">
     </form>
