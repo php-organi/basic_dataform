@@ -1,20 +1,30 @@
 <?php
 
 try{
-  $pdo = new PDO('mysql:host=localhost;dbname=board;charset=utf8','php-or','php-or');
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  include __DIR__ . '/../includes/DatabaseConnection.php';
+  include __DIR__ . '/../classes/DatabaseTable.php';
 
-  $sql = 'SELECT `foodtext` FROM `food`';
+  $foodstable = new DatabaseTable($pdo, 'food', 'id');
+  $authorstable = new DatabaseTable($pdo, 'author', 'id');
 
-  $result = $pdo->query($sql);
+  $result = $foodstable->findAll();
+  $foods = [];
+  foreach($result as $food){
+    // $author = findById($pdo, 'author', 'id', $food['authorid']);
+    $author = $authorstable->findById($food['authorid']);
 
-  while($row = $result->fetch()){
-     $foods[] = $row['foodtext'];
+    $foods[] = [
+      'id'=>$food['id'],
+      'foodtext'=>$food['foodtext'],
+      'fooddate'=>$food['fooddate'],
+      'name'=>$author['name'],
+      'email'=>$author['email'],
+    ];
   }
 
-  // $foods = $pdo->query($sql);
-
   $title = 'food 목록';
+
+  $totalFood = $foodstable->total();
 
   ob_start();
 
