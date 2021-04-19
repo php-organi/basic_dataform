@@ -1,5 +1,8 @@
 <?php
-class FoodController{
+namespace Ijdb\Controllers;
+use \Hanbit\DatabaseTable;
+
+class Food{
   private $authorsTable;
   private $foodsTable;
 
@@ -41,24 +44,23 @@ class FoodController{
     header('location: /food/list');
   }
 
-  public function edit(){
-    if(isset($_POST['food'])){
-      $food = $_POST['food'];
-      $food['fooddate'] = new DateTime();
+  public function saveEdit(){
+    $food = $_POST['food'];
+      $food['fooddate'] = new \DateTime();
       $food['authorid'] = 1;
-
       $this->foodstable->save($food);
-
       header('location: /food/list');
-    }else{
-      if(isset($_GET['id'])){
+  }
+  public function edit(){
+
+        if(isset($_GET['id'])){
         $food = $this->foodstable->findById($_GET['id']);
 
       }
       $title = 'food 글 수정';
-    }
 
-    return ['template'=>'editfood.html.php', 'title'=>$title,
+    return ['template'=>'editfood.html.php',
+            'title'=>$title,
             'variables'=>['food'=>$food ?? null]];
   }
 }
