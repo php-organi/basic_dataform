@@ -1,11 +1,16 @@
 <?php
 
-$title = 'food 란?';
+try{
+  include __DIR__ . '/../includes/autoload.php';
+  $route = ltrim(strtok($_SERVER['REQUEST_URI'], '?'), '/');
+  $entryPoint = new \Hanbit\EntryPoint($route, $_SERVER['REQUEST_METHOD'], new \Ijdb\IjdbRoutes());
+  $entryPoint->run();
 
-ob_start();
+}catch(PDOException $e){
+  $title = '오류 발생';
 
-include __DIR__ . '/../templates/home.html.php';
-
-$output = ob_get_clean();
+  $output = ' db 오류: ' . $e->getMessage() . ', 위치: ' .
+  $e->getFile() . ':' . $e->getLine();
+}
 
 include __DIR__ . '/../templates/layout.html.php';
