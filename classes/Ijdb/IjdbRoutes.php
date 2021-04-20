@@ -2,33 +2,22 @@
 namespace Ijdb;
 
 class IjdbRoutes implements \Hanbit\Routes {
-  // public function callAction($route){
-  public function getRoutes(){
+  private $authorController;
+  private $foodsTable;
+  private $authentication;
+
+  public function __construct(){
     include __DIR__ . '/../../includes/DatabaseConnection.php';
 
-    $foodsTable = new \Hanbit\DatabaseTable($pdo, 'food', 'id');
-    $authorsTable = new \Hanbit\DatabaseTable($pdo, 'author', 'id');
+    $this->foodsTable = new \Hanbit\DatabaseTable($pdo, 'food', 'id');
+    $this->authorsTable = new \Hanbit\DatabaseTable($pdo, 'author', 'id');
+    $this->authentication = new \Hanbit\Authentication($this->authorsTable, 'email', 'password');
+  }
 
-    $foodController = new \Ijdb\Controller\Food($foodsTable, $authorsTable);
-    $authorController = new \Ijdb\Controller\Register($authorsTable);
+  public function getRoutes(): array {
 
-    // if($route === 'food/list'){
-    //   $controller = new \Ijdb\Controllers\Food($foodsTable, $authorsTable);
-    //   $page = $controller->list();
-    // }elseif($route === ''){
-    //   $controller = new \Ijdb\Controllers\Food($foodsTable, $authorsTable);
-    //   $page = $controller->home();
-    // }elseif($route === 'food/edit'){
-    //   $controller = new \Ijdb\Controllers\Food($foodsTable, $authorsTable);
-    //   $page = $controller->edit();
-    // }elseif($route === 'food/delete'){
-    //   $controller = new \Ijdb\Controllers\Food($foodsTable, $authorsTable);
-    //   $page = $controller->delete();
-    // }elseif($route === 'register'){
-    //   $controller = new \Ijdb\Controllers\Register($authorsTable);
-    //   $page = $controller->showForm();
-    // }
-    // return $page;
+    $foodController = new \Ijdb\Controller\Food($this->foodsTable, $this->authorsTable, $this->authentication);
+    $authorController = new \Ijdb\Controller\Register($this->authorsTable);
 
       $routes = [
         'food/edit'=>[
@@ -37,12 +26,14 @@ class IjdbRoutes implements \Hanbit\Routes {
           ],
           'GET'=>[
             'controller'=>$foodController, 'action'=>'edit'
-          ]
+          ],
+          'login' => true
         ],
         'food/delete'=>[
           'POST'=>[
             'controller'=>$foodController, 'action'=>'delete'
-          ]
+          ],
+          'login' => true
         ],
         'food/list'=>[
           'GET'=>[
@@ -66,13 +57,36 @@ class IjdbRoutes implements \Hanbit\Routes {
           'GET'=>[
             'controller'=>$authorController, 'action'=>'success'
           ]
+        ],
+        'login/error'=>[
+          'GET'=>[
+            'controller'=>'$loginController',
+            'action'=>'error'
+          ]
+        ],
+        'login'=>[
+          'GET'=>[
+            'controller'=>$loginController, 'action'=>'loginform'
+          ],
+          'POST'=>[
+            'controller'=>$loginController, 'action'=>'processLogin'
+          ]
+        ],
+        'login/success'=>[
+          'GET'=>[
+            'controller'=>$loginController, 'action'=>'success'
+          ],
+          'login'=>true
+        ],
+        'logout'=>[
+          'GET'=>[
+            'controller'=>$loginController, 'action'=>'logout'
+          ]
         ]
       ];
-      // $method = $_SERVER['REQUEST_METHOD'];
-      // $controller = $routes[$route][$method]['controller'];
-      // $action = $routes[$route][$method]['action'];
-
-      // return $controller->$action();
       return $routes;
+  }
+  public function getAuthentication(): \Hanbit\Authentication{
+    return $this->authentication;
   }
 }

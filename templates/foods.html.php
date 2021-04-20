@@ -11,7 +11,13 @@
     작성일: <?php $date = new DateTime($food['fooddate']);
             echo $date->format('jS F Y')?>)
 
-    <a href="/food/edit?id=<?=$food['id']?>">수정</a>
+    <?php if($userId == $joke['authorId']): ?>
+      <a href="/food/edit?id=<?=$food['id']?>">수정</a>
+      <form action="/food/delete" method="post">
+        <input type="hidden" name="id" value="<?=$food['id']?>">
+        <input type="submit" value="삭제">
+      </form>
+    <?php endif; ?>
 
     <form action="/food/delete" method="post">
       <input type="hidden" name="id" value="<?=$food['id']?>">

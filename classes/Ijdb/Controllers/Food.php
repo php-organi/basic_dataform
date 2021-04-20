@@ -1,14 +1,16 @@
 <?php
 namespace Ijdb\Controllers;
 use \Hanbit\DatabaseTable;
+use \Hanbit\Authentication;
 
 class Food{
   private $authorsTable;
   private $foodsTable;
 
-  public function __construct(DatabaseTable $foodsTable, DatabaseTable $authorsTable){
+  public function __construct(DatabaseTable $foodsTable, DatabaseTable $authorsTable, Authentication $authentication){
     $this->foodsTable = $foodsTable;
     $this->authorsTable = $authorsTable;
+    $this->authentication = $authentication;
   }
 
   public function list(){
@@ -23,15 +25,17 @@ class Food{
         'fooddate'=>$food['fooddate'],
         'name'=>$author['name'],
         'email'=>$author['email'],
+        'authorId'=>$author['id']
     ];
     }
 
     $title = 'food 목록';
 
     $totalFood = $foodstable->total();
+    $author = $this->authentication->getUser();
 
     return ['template'=>'foods.html.php', 'title'=>$title,
-            'variables'=>['totalfoods'=>$totalFood, 'foods'=>$foods]];
+            'variables'=>['totalfoods'=>$totalFood, 'foods'=>$foods, 'userId'=>$author['id'] ?? null ]];
   }
 
   public function home(){
@@ -40,18 +44,34 @@ class Food{
   }
 
   public function delete(){
+    $author = $this->authentication->getUser();
+    $food = $this->foodsTable->findById($_GET['id']);
+
+      if($food['authorId'] != $author['id']){
+        return;
+      }
+
     $this->foodstable->delete($_POST['id']);
     header('location: /food/list');
   }
 
   public function saveEdit(){
+    $author = $this->authentication->getUser();
+    if(isset($_get['id'])){
+      $food = $this->foodsTable->findById($_GET['id']);
+      if($food['authorId'] != $author['id']){
+        return;
+      }
+    }
+
     $food = $_POST['food'];
       $food['fooddate'] = new \DateTime();
-      $food['authorid'] = 1;
+      $food['authorid'] = $author['id'];
       $this->foodstable->save($food);
       header('location: /food/list');
   }
   public function edit(){
+    $author = $this->authentication->getUser();
 
         if(isset($_GET['id'])){
         $food = $this->foodstable->findById($_GET['id']);
@@ -61,6 +81,6 @@ class Food{
 
     return ['template'=>'editfood.html.php',
             'title'=>$title,
-            'variables'=>['food'=>$food ?? null]];
+            'variables'=>['food'=>$food ?? null, 'userId'=> $author['id']?? null ]];
   }
 }

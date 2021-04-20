@@ -15,6 +15,12 @@
         <li><a href="/">Home</a></li>
         <li><a href="/food/list">목록</a></li>
         <li><a href="/food/edit">등록</a></li>
+
+        <?php if($loggedIn): ?>
+        <li><a href="/logout">로그아웃</a></li>
+        <?php else: ?>
+        <li><a href="/login">로그인</a></li>
+        <?php endif; ?>
       </ul>
     </header>
   </nav>

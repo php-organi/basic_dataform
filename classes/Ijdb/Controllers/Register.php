@@ -5,7 +5,7 @@ use \Hanbit\DatabaseTable;
 class Register{
   private $authorsTable;
 
-  public function __CONSTRUCT(DatabaseTable $authorsTable){
+  public function __counstruct(DatabaseTable $authorsTable){
     $this->authorsTable = $authorsTable;
   }
 
