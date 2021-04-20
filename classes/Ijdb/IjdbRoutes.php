@@ -10,6 +10,7 @@ class IjdbRoutes implements \Hanbit\Routes {
     $authorsTable = new \Hanbit\DatabaseTable($pdo, 'author', 'id');
 
     $foodController = new \Ijdb\Controller\Food($foodsTable, $authorsTable);
+    $authorController = new \Ijdb\Controller\Register($authorsTable);
 
     // if($route === 'food/list'){
     //   $controller = new \Ijdb\Controllers\Food($foodsTable, $authorsTable);
@@ -51,6 +52,19 @@ class IjdbRoutes implements \Hanbit\Routes {
         ''=>[
           'GET'=>[
             'controller'=>$foodController, 'action'=>'home'
+          ]
+        ],
+        'author/register'=>[
+          'GET'=>[
+            'controller'=>$authorController, 'action'=>'registrationForm'
+          ],
+          'POST'=>[
+            'controller'=>$authorController, 'action'=>'registerUser'
+          ]
+        ],
+        'author/success'=>[
+          'GET'=>[
+            'controller'=>$authorController, 'action'=>'success'
           ]
         ]
       ];
